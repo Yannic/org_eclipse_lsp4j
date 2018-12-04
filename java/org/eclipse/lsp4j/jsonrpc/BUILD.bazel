@@ -1,0 +1,71 @@
+## Copyright (c) 2018 Yannic Bonenberger and others.
+##
+## This program and the accompanying materials are made available under the
+## terms of the Eclipse Public License v. 2.0 which is available at
+## http://www.eclipse.org/legal/epl-2.0,
+## or the Eclipse Distribution License v. 1.0 which is available at
+## http://www.eclipse.org/org/documents/edl-v10.php.
+
+licenses(["reciprocal"])  # Eclipse Public License - v2.0
+
+java_library(
+    name = "jsonrpc",
+    srcs = [
+        "CancelChecker.java",
+        "CompletableFutures.java",
+        "Endpoint.java",
+        "JsonRpcException.java",
+        "Launcher.java",
+        "MessageConsumer.java",
+        "MessageIssueException.java",
+        "MessageIssueHandler.java",
+        "MessageProducer.java",
+        "RemoteEndpoint.java",
+        "ResponseErrorException.java",
+        "json/ConcurrentMessageProcessor.java",
+        "json/JsonRpcMethod.java",
+        "json/JsonRpcMethodProvider.java",
+        "json/MessageConstants.java",
+        "json/MessageJsonHandler.java",
+        "json/MethodProvider.java",
+        "json/ResponseJsonAdapter.java",
+        "json/StreamMessageConsumer.java",
+        "json/StreamMessageProducer.java",
+        "json/adapters/CollectionTypeAdapter.java",
+        "json/adapters/CollectionTypeAdapterFactory.java",
+        "json/adapters/EitherTypeAdapter.java",
+        "json/adapters/EitherTypeAdapterFactory.java",
+        "json/adapters/EnumTypeAdapter.java",
+        "json/adapters/EnumTypeAdapterFactory.java",
+        "json/adapters/JsonElementTypeAdapter.java",
+        "json/adapters/MessageTypeAdapter.java",
+        "json/adapters/MessageTypeAdapterFactory.java",
+        "json/adapters/ThrowableTypeAdapter.java",
+        "json/adapters/TypeUtils.java",
+        "messages/CancelParams.java",
+        "messages/Either.java",
+        "messages/Either3.java",
+        "messages/IdentifiableMessage.java",
+        "messages/Message.java",
+        "messages/MessageIssue.java",
+        "messages/NotificationMessage.java",
+        "messages/RequestMessage.java",
+        "messages/ResponseError.java",
+        "messages/ResponseErrorCode.java",
+        "messages/ResponseMessage.java",
+        "services/AnnotationUtil.java",
+        "services/EndpointProxy.java",
+        "services/GenericEndpoint.java",
+        "services/JsonDelegate.java",
+        "services/JsonNotification.java",
+        "services/JsonRequest.java",
+        "services/JsonSegment.java",
+        "services/ServiceEndpoints.java",
+        "validation/NonNull.java",
+        "validation/ReflectiveMessageValidator.java",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@gson//jar",
+    ],
+)
