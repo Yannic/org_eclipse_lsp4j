@@ -13,6 +13,7 @@ java_test(
     srcs = [
         "IntegrationTest.java",
     ],
+    flaky = True,
     visibility = ["//visibility:public"],
     deps = [
         ":LogMessageAccumulator",

@@ -16,7 +16,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 /**
  * A message with an {@code id} property.
  */
-public abstract class IdentifiableMessage extends Message {
+public abstract class IdentifiableMessage extends AbstractMessage {
   /**
    * The message identifier.
    */

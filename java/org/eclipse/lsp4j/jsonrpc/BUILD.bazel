@@ -8,18 +8,42 @@
 
 licenses(["reciprocal"])  # Eclipse Public License - v2.0
 
+libraries = [
+    ":services_AnnotationUtil",
+    ":services_JsonDelegate",
+    ":services_JsonNotification",
+    ":services_JsonRequest",
+    ":services_JsonSegment",
+    ":MessageProducer",
+    ":MessageIssueException",
+    ":MessageIssueHandler",
+    ":JsonRpcException",
+    ":MessageConsumer",
+    ":CancelChecker",
+    ":CompletableFutures",
+    ":Endpoint",
+    ":json_MessageConstants",
+    ":json_adapters_CollectionTypeAdapter",
+    ":json_adapters_CollectionTypeAdapterFactory",
+    ":json_adapters_EitherTypeAdapter",
+    ":json_adapters_EitherTypeAdapterFactory",
+    ":json_adapters_EnumTypeAdapter",
+    ":json_adapters_EnumTypeAdapterFactory",
+    ":json_adapters_JsonElementTypeAdapter",
+    ":json_adapters_ThrowableTypeAdapter",
+    ":json_adapters_TypeUtils",
+    ":messages_Either",
+    ":messages_Either3",
+    ":messages_Message",
+    ":messages_MessageIssue",
+    ":messages_ResponseErrorCode",
+    ":validation_NonNull",
+]
+
 java_library(
     name = "jsonrpc",
     srcs = [
-        "CancelChecker.java",
-        "CompletableFutures.java",
-        "Endpoint.java",
-        "JsonRpcException.java",
         "Launcher.java",
-        "MessageConsumer.java",
-        "MessageIssueException.java",
-        "MessageIssueHandler.java",
-        "MessageProducer.java",
         "RemoteEndpoint.java",
         "ResponseErrorException.java",
         "json/ConcurrentMessageProcessor.java",
@@ -31,41 +55,397 @@ java_library(
         "json/ResponseJsonAdapter.java",
         "json/StreamMessageConsumer.java",
         "json/StreamMessageProducer.java",
-        "json/adapters/CollectionTypeAdapter.java",
-        "json/adapters/CollectionTypeAdapterFactory.java",
-        "json/adapters/EitherTypeAdapter.java",
-        "json/adapters/EitherTypeAdapterFactory.java",
-        "json/adapters/EnumTypeAdapter.java",
-        "json/adapters/EnumTypeAdapterFactory.java",
-        "json/adapters/JsonElementTypeAdapter.java",
+        # Depends on messages.
         "json/adapters/MessageTypeAdapter.java",
         "json/adapters/MessageTypeAdapterFactory.java",
-        "json/adapters/ThrowableTypeAdapter.java",
-        "json/adapters/TypeUtils.java",
+        "messages/AbstractMessage.java",
         "messages/CancelParams.java",
-        "messages/Either.java",
-        "messages/Either3.java",
         "messages/IdentifiableMessage.java",
-        "messages/Message.java",
-        "messages/MessageIssue.java",
         "messages/NotificationMessage.java",
         "messages/RequestMessage.java",
         "messages/ResponseError.java",
-        "messages/ResponseErrorCode.java",
         "messages/ResponseMessage.java",
-        "services/AnnotationUtil.java",
         "services/EndpointProxy.java",
         "services/GenericEndpoint.java",
-        "services/JsonDelegate.java",
-        "services/JsonNotification.java",
-        "services/JsonRequest.java",
-        "services/JsonSegment.java",
         "services/ServiceEndpoints.java",
-        "validation/NonNull.java",
         "validation/ReflectiveMessageValidator.java",
     ],
-    visibility = ["//visibility:public"],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    exports = libraries,
+    deps = libraries + [
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "CancelChecker",
+    srcs = [
+        "CancelChecker.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+java_library(
+    name = "CompletableFutures",
+    srcs = [
+        "CompletableFutures.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":CancelChecker",
+    ],
+)
+
+java_library(
+    name = "Endpoint",
+    srcs = [
+        "Endpoint.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+java_library(
+    name = "JsonRpcException",
+    srcs = [
+        "JsonRpcException.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+# "Launcher.java",
+
+java_library(
+    name = "MessageConsumer",
+    srcs = [
+        "MessageConsumer.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":JsonRpcException",
+        ":MessageIssueException",
+        ":messages_Message",
+    ],
+)
+
+java_library(
+    name = "MessageIssueException",
+    srcs = [
+        "MessageIssueException.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":messages_Message",
+        ":messages_MessageIssue",
+    ],
+)
+
+java_library(
+    name = "MessageIssueHandler",
+    srcs = [
+        "MessageIssueHandler.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":messages_Message",
+        ":messages_MessageIssue",
+    ],
+)
+
+java_library(
+    name = "MessageProducer",
+    srcs = [
+        "MessageProducer.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":JsonRpcException",
+        ":MessageConsumer",
+    ],
+)
+
+# "MessageProducer.java",
+# "RemoteEndpoint.java",
+# "ResponseErrorException.java",
+
+################################################################################
+## json/adapters
+
+java_library(
+    name = "json_adapters_CollectionTypeAdapter",
+    srcs = [
+        "json/adapters/CollectionTypeAdapter.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":json_adapters_JsonElementTypeAdapter",
+        ":json_adapters_TypeUtils",
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_CollectionTypeAdapterFactory",
+    srcs = [
+        "json/adapters/CollectionTypeAdapterFactory.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":json_adapters_CollectionTypeAdapter",
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_EitherTypeAdapter",
+    srcs = [
+        "json/adapters/EitherTypeAdapter.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":json_adapters_TypeUtils",
+        ":messages_Either",
+        ":messages_Either3",
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_EitherTypeAdapterFactory",
+    srcs = [
+        "json/adapters/EitherTypeAdapterFactory.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":json_adapters_EitherTypeAdapter",
+        ":messages_Either",
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_EnumTypeAdapter",
+    srcs = [
+        "json/adapters/EnumTypeAdapter.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
     deps = [
         "@gson//jar",
     ],
+)
+
+java_library(
+    name = "json_adapters_EnumTypeAdapterFactory",
+    srcs = [
+        "json/adapters/EnumTypeAdapterFactory.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":json_adapters_EnumTypeAdapter",
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_JsonElementTypeAdapter",
+    srcs = [
+        "json/adapters/JsonElementTypeAdapter.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@gson//jar",
+    ],
+)
+
+# "json/adapters/MessageTypeAdapter.java",
+# "json/adapters/MessageTypeAdapterFactory.java",
+
+java_library(
+    name = "json_adapters_ThrowableTypeAdapter",
+    srcs = [
+        "json/adapters/ThrowableTypeAdapter.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@gson//jar",
+    ],
+)
+
+java_library(
+    name = "json_adapters_TypeUtils",
+    srcs = [
+        "json/adapters/TypeUtils.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":messages_Either",
+        "@gson//jar",
+    ],
+)
+
+################################################################################
+## json
+
+java_library(
+    name = "json_MessageConstants",
+    srcs = [
+        "json/MessageConstants.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+################################################################################
+## messages
+
+# "messages/AbstractMessage.java",
+# "messages/CancelParams.java",
+
+java_library(
+    name = "messages_Either",
+    srcs = [
+        "messages/Either.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":validation_NonNull",
+    ],
+)
+
+java_library(
+    name = "messages_Either3",
+    srcs = [
+        "messages/Either3.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":messages_Either",
+        ":validation_NonNull",
+    ],
+)
+
+# "messages/IdentifiableMessage.java",
+
+java_library(
+    name = "messages_Message",
+    srcs = [
+        "messages/Message.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":validation_NonNull",
+    ],
+)
+
+java_library(
+    name = "messages_MessageIssue",
+    srcs = [
+        "messages/MessageIssue.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":validation_NonNull",
+    ],
+)
+
+# "messages/NotificationMessage.java",
+# "messages/RequestMessage.java",
+# "messages/ResponseError.java",
+
+java_library(
+    name = "messages_ResponseErrorCode",
+    srcs = [
+        "messages/ResponseErrorCode.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+# "messages/ResponseMessage.java",
+
+################################################################################
+## services
+
+java_library(
+    name = "services_AnnotationUtil",
+    srcs = [
+        "services/AnnotationUtil.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "services_JsonRequest",
+        ":services_JsonDelegate",
+        ":services_JsonNotification",
+        ":services_JsonSegment",
+    ],
+)
+
+java_library(
+    name = "services_JsonDelegate",
+    srcs = [
+        "services/JsonDelegate.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+java_library(
+    name = "services_JsonNotification",
+    srcs = [
+        "services/JsonNotification.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+java_library(
+    name = "services_JsonRequest",
+    srcs = [
+        "services/JsonRequest.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+java_library(
+    name = "services_JsonSegment",
+    srcs = [
+        "services/JsonSegment.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
+)
+
+################################################################################
+## validation
+
+java_library(
+    name = "validation_NonNull",
+    srcs = [
+        "validation/NonNull.java",
+    ],
+    # TODO(yannic): Change to "//visibility:public" after removing dep cycles.
+    visibility = ["//:__subpackages__"],
 )
